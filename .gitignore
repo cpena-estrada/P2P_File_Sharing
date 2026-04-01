@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+
+# Runtime node storage (each node's local files/metadata live here)
+storage/*/
+
+# Claude Code local settings
+.claude/settings.local.json
