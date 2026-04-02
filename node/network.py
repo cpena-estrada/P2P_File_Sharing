@@ -1,4 +1,4 @@
-# heartbeat.py
+# network.py
 
 import requests
 import time
@@ -34,3 +34,18 @@ def heartbeat_loop(interval: int = 5):
     while True:
         ping_peers()
         time.sleep(interval)
+
+
+def replicate(file_name: str, text: str, timestamp: float, written_by: str):
+    for peer in online_peers:
+        try:
+            requests.post(
+                f"http://{peer}/sync/{file_name}",
+                json={
+                    'text': text,
+                    'incoming_timestamp': timestamp,
+                    'written_by': written_by
+                }
+            )
+        except:
+            pass  # peer went offline between heartbeat and replication, skip it
