@@ -3,6 +3,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from store import FileStore
+from network import replicate
 
 
 app = FastAPI()
@@ -49,7 +50,10 @@ def get_file(file_name: str):
 
 @app.post('/files/{file_name}')
 def write_file(file_name: str, body: FileIn):
-    store.write_file(file_name, body.text)
+    timestamp = store.write_file(file_name, body.text)
+    # Replicate this write across nodes
+    replicate(file_name, body.text, timestamp, store.node_name)
+    
     return {
         'status': 'ok',
         'file_name': file_name
@@ -59,7 +63,9 @@ def write_file(file_name: str, body: FileIn):
 @app.post('/sync/{file_name}')
 def sync_file(file_name: str, body: FileSync):
     """
-    Overwrite file for the given node if incoming timestamp is greater than local timestamp
+    On the receiver side, overwrite file for the a node if incoming timestamp is greater than local timestamp
+
+    Called by replicate()
     """
     if store.is_newer(file_name, body.incoming_timestamp):
         store.write_file(file_name, body.text, body.incoming_timestamp)

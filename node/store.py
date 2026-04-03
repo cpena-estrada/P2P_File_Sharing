@@ -4,6 +4,7 @@ from pathlib import Path
 import json
 import time
 
+
 """
 The intended strcture is:
 
@@ -38,20 +39,27 @@ class FileStore():
     def write_file(self, file_name: str, text: str, timestamp: float = None):
         """
         Create file and its metadata
+
+        Return timestamp so it can be used in the endpoint
         """
+        if timestamp is None:
+            timestamp = time.time()
+        
         with open(self.files_dir / file_name, 'w') as f:
             f.write(text)
 
         # Write metadata as json
         data = {
             'filename': file_name,
-            'timestamp': timestamp if timestamp else time.time(),
+            'timestamp': timestamp,
             'written_by': self.node_name
         }
 
         with open(self.metadata_dir / (file_name + '.json'), 'w') as f:
             json.dump(data, f, indent=2)
             # f.write(json.dumps(data, indent=2))
+
+        return timestamp
 
     
     def read_file(self, file_name: str):
@@ -61,7 +69,7 @@ class FileStore():
         Return file text as string, metadata as dict
         """
         # Check files exist
-        if not self.files_dir.exists() or not self.metadata_dir.exists():
+        if not (self.files_dir / file_name).exists() or not (self.metadata_dir / (file_name + '.json')).exists():
             return None, None
 
         with open(self.files_dir / file_name, 'r') as f:
@@ -91,5 +99,3 @@ class FileStore():
             return True
         
         return False
-
-             
