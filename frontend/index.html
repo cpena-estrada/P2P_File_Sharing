@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>P2P File Sharing Frontend</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Decentralized Text Replication</p>
+          <h1>Upload a text file once and mirror it across connected nodes.</h1>
+          <p class="hero-text">
+            This frontend is a lightweight demo for a peer-to-peer file sharing
+            project where clients send `.txt` files and every online node gets
+            updated.
+          </p>
+        </div>
+
+        <div class="status-panel">
+          <div class="top-actions">
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+              Dark mode
+            </button>
+          </div>
+          <div class="status-chip">
+            <span class="status-dot"></span>
+            <span id="network-status">3 nodes online</span>
+          </div>
+          <p class="status-caption">Replication status updates in the browser.</p>
+        </div>
+      </section>
+
+      <section class="dashboard">
+        <article class="panel upload-panel">
+          <div class="panel-heading">
+            <p class="panel-label">Client Upload</p>
+            <h2>Send `.txt` files to the network</h2>
+          </div>
+
+          <form id="upload-form" class="upload-form">
+            <label class="upload-dropzone" for="file-input">
+              <input id="file-input" name="file" type="file" accept=".txt,text/plain" />
+              <span class="dropzone-title">Choose a text file</span>
+              <span class="dropzone-subtitle">
+                The selected file will be copied to every active node below.
+              </span>
+            </label>
+
+            <div class="file-meta">
+              <div>
+                <p class="meta-label">Selected File</p>
+                <p id="file-name" class="meta-value">No file selected</p>
+              </div>
+              <div>
+                <p class="meta-label">Size</p>
+                <p id="file-size" class="meta-value">0 B</p>
+              </div>
+            </div>
+
+            <button type="submit" class="primary-button">Upload to Nodes</button>
+          </form>
+
+          <div class="activity-log">
+            <div class="panel-heading">
+              <p class="panel-label">Activity</p>
+              <h3>Recent network events</h3>
+            </div>
+            <ul id="activity-list"></ul>
+          </div>
+        </article>
+
+        <article class="panel nodes-panel">
+          <div class="panel-heading">
+            <p class="panel-label">Node Cluster</p>
+            <h2>Connected peers</h2>
+          </div>
+
+          <div id="nodes-grid" class="nodes-grid"></div>
+        </article>
+      </section>
+    </main>
+
+    <template id="node-template">
+      <section class="node-card">
+        <div class="node-top">
+          <div>
+            <p class="node-name"></p>
+            <p class="node-address"></p>
+          </div>
+          <span class="node-badge">Synced</span>
+        </div>
+
+        <div class="node-body">
+          <p class="meta-label">Latest file</p>
+          <p class="node-file">No file replicated yet</p>
+          <p class="meta-label">Preview</p>
+          <pre class="node-preview">Waiting for client upload...</pre>
+        </div>
+      </section>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
