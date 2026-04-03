@@ -7,7 +7,7 @@ venv/
 .venv/
 
 # Runtime node storage (each node's local files/metadata live here)
-storage/*/
+storage/
 
 # Claude Code local settings
 .claude/settings.local.json
