@@ -24,6 +24,16 @@ Then open `http://localhost:8080`.
 
 ## Notes
 
-This is currently frontend-only and uses browser-side mock data.
-When your backend routes are ready, the main place to connect real API calls is
-in `app.js`.
+This frontend now talks to a running backend node.
+
+Start one or more nodes first, then open the frontend and point the "Gateway
+node" field at one of them.
+
+Example:
+
+```bash
+cd node
+python3 main.py --port 8000 --peers 127.0.0.1:8001 127.0.0.1:8002
+python3 main.py --port 8001 --peers 127.0.0.1:8000 127.0.0.1:8002
+python3 main.py --port 8002 --peers 127.0.0.1:8000 127.0.0.1:8001
+```

@@ -56,6 +56,14 @@ def replicate(file_name: str, text: str, timestamp: float, written_by: str):
         except:
             pass  # peer went offline between heartbeat and replication, skip it
 
+
+def replicate_delete(file_name: str):
+    for peer in online_peers:
+        try:
+            requests.delete(f"http://{peer}/sync/{file_name}")
+        except:
+            pass
+
 def sync_on_start_up():
     """
     Populate local storage by getting all files of all active peers

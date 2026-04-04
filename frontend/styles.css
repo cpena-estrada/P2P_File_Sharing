@@ -69,6 +69,10 @@ input {
   font: inherit;
 }
 
+input {
+  color: inherit;
+}
+
 .page-shell {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
@@ -130,8 +134,38 @@ input {
 
 .top-actions {
   display: flex;
+  align-items: start;
   justify-content: flex-end;
+  gap: 12px;
   margin-bottom: 18px;
+}
+
+.gateway-controls {
+  flex: 1;
+}
+
+.gateway-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.gateway-row {
+  display: flex;
+  gap: 10px;
+}
+
+.gateway-input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--toggle-line);
+  border-radius: 14px;
+  background: var(--toggle-bg);
+  color: var(--toggle-text);
+  padding: 11px 14px;
 }
 
 .theme-toggle {
@@ -142,6 +176,17 @@ input {
   border-radius: 999px;
   cursor: pointer;
   font-weight: 700;
+}
+
+.secondary-button {
+  border: 1px solid var(--toggle-line);
+  background: var(--toggle-bg);
+  color: var(--toggle-text);
+  padding: 10px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .status-chip {
@@ -246,6 +291,10 @@ input {
   margin-top: 22px;
 }
 
+.file-browser {
+  margin-top: 22px;
+}
+
 #activity-list {
   list-style: none;
   padding: 0;
@@ -260,6 +309,41 @@ input {
   background: var(--activity-bg);
   border: 1px solid var(--activity-line);
   color: var(--activity-text);
+}
+
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.file-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+}
+
+.file-entry-name {
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.danger-button {
+  border: 1px solid rgba(159, 67, 32, 0.24);
+  background: rgba(217, 108, 61, 0.12);
+  color: var(--accent-dark);
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .nodes-grid {
@@ -325,6 +409,14 @@ input {
   .hero h1 {
     max-width: none;
   }
+
+  .top-actions {
+    flex-direction: column;
+  }
+
+  .theme-toggle {
+    align-self: flex-end;
+  }
 }
 
 @media (max-width: 560px) {
@@ -340,5 +432,9 @@ input {
 
   .file-meta {
     grid-template-columns: 1fr;
+  }
+
+  .gateway-row {
+    flex-direction: column;
   }
 }

@@ -27,6 +27,21 @@
 
         <div class="status-panel">
           <div class="top-actions">
+            <div class="gateway-controls">
+              <label class="gateway-label" for="gateway-url">Gateway node</label>
+              <div class="gateway-row">
+                <input
+                  id="gateway-url"
+                  class="gateway-input"
+                  type="url"
+                  value="http://127.0.0.1:8000"
+                  placeholder="http://127.0.0.1:8000"
+                />
+                <button id="refresh-network" class="secondary-button" type="button">
+                  Refresh
+                </button>
+              </div>
+            </div>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
               Dark mode
             </button>
@@ -35,7 +50,7 @@
             <span class="status-dot"></span>
             <span id="network-status">3 nodes online</span>
           </div>
-          <p class="status-caption">Replication status updates in the browser.</p>
+          <p class="status-caption">Point the UI at one running node and it will discover the rest of the cluster.</p>
         </div>
       </section>
 
@@ -76,6 +91,14 @@
             </div>
             <ul id="activity-list"></ul>
           </div>
+
+          <div class="file-browser">
+            <div class="panel-heading">
+              <p class="panel-label">Gateway Files</p>
+              <h3>Delete replicated `.txt` files</h3>
+            </div>
+            <ul id="file-list" class="file-list"></ul>
+          </div>
         </article>
 
         <article class="panel nodes-panel">
@@ -96,7 +119,7 @@
             <p class="node-name"></p>
             <p class="node-address"></p>
           </div>
-          <span class="node-badge">Synced</span>
+          <span class="node-badge">Checking</span>
         </div>
 
         <div class="node-body">
