@@ -80,6 +80,17 @@ class FileStore():
             # metadata = json.loads(f.read())
 
         return text, metadata
+
+    def delete_file(self, file_name: str):
+        file_path = self.files_dir / file_name
+        metadata_path = self.metadata_dir / (file_name + '.json')
+
+        if not file_path.exists() or not metadata_path.exists():
+            return False
+
+        file_path.unlink()
+        metadata_path.unlink()
+        return True
     
     def list_files(self):
         files = {'files': []}

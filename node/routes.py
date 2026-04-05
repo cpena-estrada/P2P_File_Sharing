@@ -1,12 +1,21 @@
 # routes.py
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from store import FileStore
-from network import replicate
+from network import replicate, replicate_delete
+import network
 
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=False,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
 
 
 # Models
@@ -27,6 +36,36 @@ def health():
     return {
         'status': 'ok',
         'message': f'hi from: {store.node_name}'
+    }
+
+
+@app.get('/cluster')
+def cluster(request: Request):
+    current_address = f'{request.url.hostname}:{request.url.port}'
+    known_peers = sorted(set(network.peers))
+    online_peers = sorted(set(network.online_peers))
+
+    nodes = [{
+        'name': store.node_name,
+        'address': current_address,
+        'online': True,
+        'role': 'self'
+    }]
+
+    for peer in known_peers:
+        nodes.append({
+            'name': f"node_{peer.split(':')[-1]}",
+            'address': peer,
+            'online': peer in online_peers,
+            'role': 'peer'
+        })
+
+    return {
+        'current_node': store.node_name,
+        'current_address': current_address,
+        'peers': known_peers,
+        'online_peers': online_peers,
+        'nodes': nodes
     }
 
 
@@ -58,6 +97,21 @@ def write_file(file_name: str, body: FileIn):
         'status': 'ok',
         'file_name': file_name
     }
+
+
+@app.delete('/files/{file_name}')
+def delete_file(file_name: str):
+    deleted = store.delete_file(file_name)
+
+    if not deleted:
+        raise HTTPException(status_code=404, detail='file not found')
+
+    replicate_delete(file_name)
+
+    return {
+        'status': 'ok',
+        'file_name': file_name
+    }
     
 
 @app.post('/sync/{file_name}')
@@ -72,3 +126,13 @@ def sync_file(file_name: str, body: FileSync):
         return {'status': 'accepted', 'file_name': file_name}
     
     return {'status': 'rejected', 'file_name': file_name}
+
+
+@app.delete('/sync/{file_name}')
+def sync_delete_file(file_name: str):
+    deleted = store.delete_file(file_name)
+
+    if deleted:
+        return {'status': 'accepted', 'file_name': file_name}
+
+    return {'status': 'missing', 'file_name': file_name}
