@@ -1,6 +1,6 @@
 # routes.py
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from store import FileStore
@@ -29,6 +29,7 @@ class FileSync(BaseModel):
 
 
 store: FileStore = None  # gets set by main.py at startup
+port: int = None         # gets set by main.py at startup
 
 
 @app.get('/health')
@@ -40,8 +41,12 @@ def health():
 
 
 @app.get('/cluster')
-def cluster(request: Request):
-    current_address = f'{request.url.hostname}:{request.url.port}'
+def cluster():
+    """
+    Returns a snapshot of the cluster from this node's perspective.
+    Lists all known peers and flags which ones are currently online.
+    """
+    current_address = f'localhost:{port}'
     known_peers = sorted(set(network.peers))
     online_peers = sorted(set(network.online_peers))
 

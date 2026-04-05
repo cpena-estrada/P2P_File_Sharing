@@ -17,6 +17,7 @@ if __name__ == '__main__':
     # set variables for this node
     file_store = FileStore(node_name=f'node_{args.port}')
     routes.store = file_store
+    routes.port = args.port
     network.peers = args.peers
 
     # declare and start thread to run heartbeat_loop function in the background
