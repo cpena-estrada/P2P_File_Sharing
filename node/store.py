@@ -42,10 +42,13 @@ class FileStore():
 
         Return timestamp so it can be used in the endpoint
         """
+        file_path = self.files_dir / file_name
+        metadata_path = self.metadata_dir / (file_name + '.json')
+
         if timestamp is None:
             timestamp = time.time()
         
-        with open(self.files_dir / file_name, 'w') as f:
+        with open(file_path, 'w') as f:
             f.write(text)
 
         # Write metadata as json
@@ -55,7 +58,7 @@ class FileStore():
             'written_by': self.node_name
         }
 
-        with open(self.metadata_dir / (file_name + '.json'), 'w') as f:
+        with open(metadata_path, 'w') as f:
             json.dump(data, f, indent=2)
             # f.write(json.dumps(data, indent=2))
 
@@ -68,14 +71,17 @@ class FileStore():
         
         Return file text as string, metadata as dict
         """
+        file_path = self.files_dir / file_name
+        metadata_path = self.metadata_dir / (file_name + '.json')
+
         # Check files exist
-        if not (self.files_dir / file_name).exists() or not (self.metadata_dir / (file_name + '.json')).exists():
+        if not file_path.exists() or not metadata_path.exists():
             return None, None
 
-        with open(self.files_dir / file_name, 'r') as f:
+        with open(file_path, 'r') as f:
             text = f.read()
 
-        with open(self.metadata_dir / (file_name + '.json'), 'r') as f:
+        with open(metadata_path, 'r') as f:
             metadata = json.load(f)
             # metadata = json.loads(f.read())
 
@@ -100,10 +106,13 @@ class FileStore():
         return files
 
     def is_newer(self, file_name: str, incoming_timestamp):
-        if not (self.files_dir / file_name).exists() or not (self.metadata_dir / (file_name + '.json')).exists():
+        file_path = self.files_dir / file_name
+        metadata_path = self.metadata_dir / (file_name + '.json')
+        
+        if not file_path.exists() or not metadata_path.exists():
             return True
         
-        with open(self.metadata_dir / (file_name + '.json')) as f:
+        with open(metadata_path) as f:
             metadata = json.load(f)
 
         if incoming_timestamp > metadata['timestamp']:
