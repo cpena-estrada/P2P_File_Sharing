@@ -41,7 +41,7 @@ def replicate(file_name: str, text: str, timestamp: float, written_by: str):
     """
     Replicate/send a given file to all online peers
 
-    Called by store.write_file()
+    Called by write_file() endpoint
     """
     for peer in online_peers:
         try:
@@ -63,6 +63,7 @@ def replicate_delete(file_name: str):
             requests.delete(f"http://{peer}/sync/{file_name}")
         except:
             pass
+
 
 def sync_on_start_up():
     """
