@@ -36,7 +36,7 @@ class FileStore():
         self.metadata_dir.mkdir(parents=True, exist_ok=True)
 
 
-    def write_file(self, file_name: str, text: str, timestamp: float = None):
+    def write_file(self, file_name: str, text: str, timestamp: float = None, written_by: str = None):
         """
         Create file and its metadata
 
@@ -47,7 +47,7 @@ class FileStore():
 
         if timestamp is None:
             timestamp = time.time()
-        
+
         with open(file_path, 'w') as f:
             f.write(text)
 
@@ -55,7 +55,7 @@ class FileStore():
         data = {
             'filename': file_name,
             'timestamp': timestamp,
-            'written_by': self.node_name
+            'written_by': written_by if written_by else self.node_name
         }
 
         with open(metadata_path, 'w') as f:

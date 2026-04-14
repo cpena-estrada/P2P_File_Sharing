@@ -127,7 +127,7 @@ def sync_file(file_name: str, body: FileSync):
     Called by replicate()
     """
     if store.is_newer(file_name, body.incoming_timestamp):
-        store.write_file(file_name, body.text, body.incoming_timestamp)
+        store.write_file(file_name, body.text, body.incoming_timestamp, body.written_by)
         return {'status': 'accepted', 'file_name': file_name}
     
     return {'status': 'rejected', 'file_name': file_name}
