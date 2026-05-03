@@ -399,6 +399,46 @@ input {
   white-space: pre-wrap;
 }
 
+.file-editor {
+  margin-top: 28px;
+}
+
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editor-textarea {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 0.85rem;
+  padding: 10px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--toggle-bg) !important;
+  color: var(--toggle-text) !important;
+  resize: none !important;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.editor-textarea:focus {
+  border-color: var(--accent);
+}
+
+.editor-field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 @media (max-width: 900px) {
   .hero,
   .dashboard,

@@ -18,6 +18,9 @@ const themeToggle = document.querySelector("#theme-toggle");
 const gatewayUrlInput = document.querySelector("#gateway-url");
 const refreshNetworkButton = document.querySelector("#refresh-network");
 const fileList = document.querySelector("#file-list");
+const editorForm = document.querySelector("#editor-form");
+const editorFilename = document.querySelector("#editor-filename");
+const editorContent = document.querySelector("#editor-content");
 
 function applyTheme(mode) {
   const isDark = mode === "dark";
@@ -310,6 +313,37 @@ themeToggle.addEventListener("click", () => {
 
   applyTheme(nextTheme);
   window.localStorage.setItem("theme", nextTheme);
+});
+
+editorForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const name = editorFilename.value.trim();
+  const text = editorContent.value;
+
+  if (!name) {
+    addActivity("Enter a filename before writing.");
+    return;
+  }
+
+  try {
+    await getJson(
+      `${state.gatewayUrl}/files/${encodeURIComponent(name)}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      }
+    );
+
+    addActivity(`Wrote ${name} to ${state.gatewayUrl}.`);
+    editorFilename.value = "";
+    editorContent.value = "";
+    await refreshCluster();
+  } catch (error) {
+    addActivity(`Write failed for ${name}. Check that the gateway node is running.`);
+    console.error(error);
+  }
 });
 
 refreshNetworkButton.addEventListener("click", () => {

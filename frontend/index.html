@@ -84,6 +84,24 @@
             <button type="submit" class="primary-button">Upload to Nodes</button>
           </form>
 
+          <div class="file-editor">
+            <div class="panel-heading">
+              <p class="panel-label">File Editor</p>
+              <h3>Create or edit a file by name</h3>
+            </div>
+            <form id="editor-form" class="editor-form">
+              <div class="editor-field">
+                <label class="meta-label" for="editor-filename">Filename</label>
+                <input id="editor-filename" class="gateway-input" type="text" placeholder="notes.txt" />
+              </div>
+              <div class="editor-field">
+                <label class="meta-label" for="editor-content">Content</label>
+                <textarea id="editor-content" class="editor-textarea" rows="6" placeholder="Type your file content here..."></textarea>
+              </div>
+              <button type="submit" class="primary-button">Write to Nodes</button>
+            </form>
+          </div>
+
           <div class="activity-log">
             <div class="panel-heading">
               <p class="panel-label">Activity</p>
